@@ -1,12 +1,18 @@
 using Domain.Interfaces;
 using FluentValidation;
+using Infrastructure.Auth;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using System.Text;
 using System.Text.Json.Serialization;
+using UseCase.AuthUseCase.AutenticarUsuario;
 using UseCase.CardapioUseCase.AdicionarItemCardapio;
 using UseCase.CardapioUseCase.AtualizarItemCardapio;
 using UseCase.CardapioUseCase.ListarItensCardapio;
@@ -24,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-const string serviceName = "TC.Contato.Produto.Inclusao";
+const string serviceName = "FastTechFoods";
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -95,6 +101,66 @@ builder.Services.AddScoped<IListarPedidosUseCase, ListarPedidosUseCase>();
 
 #endregion
 
+#region Autenticação
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAutenticarUsuarioUseCase, AutenticarUsuarioUseCase>();
+builder.Services.AddScoped<IValidator<AutenticarUsuarioDto>, AutenticarUsuarioValidator>();
+builder.Services.AddScoped<JwtToken>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwt = builder.Configuration.GetSection("JwtSettings");
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt["Issuer"],
+            ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SecretKey"]))
+        };
+    });
+
+
+#endregion
+
+#region Swagger
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FastTechFoods", Version = "v1" });
+
+    // Adiciona suporte ao JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Insira o token JWT como: Bearer {seu_token_aqui}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -106,6 +172,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+builder.Services.AddAuthorization();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

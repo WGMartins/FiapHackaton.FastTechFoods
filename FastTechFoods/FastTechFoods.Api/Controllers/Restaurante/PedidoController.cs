@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UseCase.Interfaces;
 
 namespace Api.Controllers.Restaurante
 {
-    [Tags("Restaurante")]
+    [Tags("Restaurante - Atendente")]
+    [Authorize(Roles = "Atendente")]
     [Route("restaurante/{idRestaurante:Guid}/[controller]")]
     [ApiController]
     public class PedidoController : ControllerBase

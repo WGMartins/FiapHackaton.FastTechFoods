@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UseCase.Interfaces;
 using UseCase.PedidoUseCase.CriarPedido;
 using UseCase.PedidoUseCase.Shared;
@@ -6,6 +7,7 @@ using UseCase.PedidoUseCase.Shared;
 namespace Api.Controllers.Cliente
 {
     [Tags("Cliente")]
+    [Authorize(Roles = "Cliente")]
     [Route("cliente/{idCliente:Guid}/[controller]")]
     [ApiController]
     public class PedidoController : ControllerBase
