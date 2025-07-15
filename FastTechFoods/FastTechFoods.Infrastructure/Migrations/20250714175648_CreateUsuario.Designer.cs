@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714175648_CreateUsuario")]
+    partial class CreateUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RestauranteId")
-                        .IsUnique();
 
                     b.ToTable("Cardapio");
                 });
@@ -98,6 +98,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CardapioId")
+                        .IsUnique();
 
                     b.ToTable("Restaurante");
                 });
@@ -217,23 +220,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("SenhaHash")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
-                });
-
-            modelBuilder.Entity("Domain.CardapioAggregate.Cardapio", b =>
-                {
-                    b.HasOne("Domain.CardapioAggregate.Restaurante", "Restaurante")
-                        .WithOne("Cardapio")
-                        .HasForeignKey("Domain.CardapioAggregate.Cardapio", "RestauranteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurante");
                 });
 
             modelBuilder.Entity("Domain.CardapioAggregate.ItemDeCardapio", b =>
@@ -241,6 +232,17 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.CardapioAggregate.Cardapio", "Cardapio")
                         .WithMany("ItensDeCardapio")
                         .HasForeignKey("CardapioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cardapio");
+                });
+
+            modelBuilder.Entity("Domain.CardapioAggregate.Restaurante", b =>
+                {
+                    b.HasOne("Domain.CardapioAggregate.Cardapio", "Cardapio")
+                        .WithOne("Restaurante")
+                        .HasForeignKey("Domain.CardapioAggregate.Restaurante", "CardapioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -280,13 +282,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.CardapioAggregate.Cardapio", b =>
                 {
                     b.Navigation("ItensDeCardapio");
+
+                    b.Navigation("Restaurante")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.CardapioAggregate.Restaurante", b =>
                 {
-                    b.Navigation("Cardapio")
-                        .IsRequired();
-
                     b.Navigation("Pedidos");
                 });
 

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UseCase.CardapioUseCase.AdicionarItemCardapio;
 using UseCase.CardapioUseCase.AtualizarItemCardapio;
 using UseCase.Interfaces;
 
 namespace Api.Controllers.Restaurante
 {
-    [Tags("Restaurante")]
+    [Tags("Restaurante - Gerente")]
+    [Authorize(Roles = "Gerente")]
     [Route("restaurante/{idRestaurante:Guid}/[controller]")]
     [ApiController]
     public class CardapioController : ControllerBase

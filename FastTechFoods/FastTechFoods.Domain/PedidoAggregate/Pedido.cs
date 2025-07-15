@@ -5,13 +5,26 @@ namespace Domain.PedidoAggregate
     public class Pedido : EntityBase
     {
         public Guid RestauranteId { get; set; }
-        public required Restaurante Restaurante { get; set; }
+        public Restaurante Restaurante { get; set; }
         public Guid ClienteId { get; set; }
-        public required Cliente Cliente { get; set; }
+        public Cliente Cliente { get; set; }
         public Status Status { get; set; }
         public FormaDeEntrega FormaDeEntrega { get; set; }
         public decimal ValorTotal { get; set; }
-        public required IList<ItemDePedido> ItensDePedido { get; set; } = [];
+        public IList<ItemDePedido> ItensDePedido { get; set; } = [];
+
+        protected Pedido(Guid restauranteId, Guid clienteId, FormaDeEntrega formaDeEntrega)
+        {
+            RestauranteId = restauranteId;
+            ClienteId = clienteId;
+            Status = Status.EmAndamento;
+            FormaDeEntrega = formaDeEntrega;
+        }
+
+        public static Pedido Criar(Guid restauranteId, Guid clienteId, FormaDeEntrega formaDeEntrega)
+        {
+            return new Pedido(restauranteId, clienteId, formaDeEntrega);
+        }
 
         private void AtualizarValorTotal (decimal valorTotalItem)
         {

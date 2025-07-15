@@ -1,10 +1,12 @@
 ﻿using Domain.CardapioAggregate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UseCase.Interfaces;
 
 namespace Api.Controllers.Cliente
 {
     [Tags("Cliente")]
+    [Authorize(Roles = "Cliente")]
     [Route("cliente/{idCliente:Guid}/[controller]")]
     [ApiController]
     public class CardapioController : ControllerBase

@@ -2,6 +2,7 @@
 using Domain.CardapioAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Domain.UsuarioAggregate;
 
 namespace Infrastructure.Repositories
 {
@@ -22,6 +23,7 @@ namespace Infrastructure.Repositories
         public DbSet<Cardapio> Cardapio { get; set; }
         public DbSet<ItemDeCardapio> ItemDeCardapio { get; set; }
         public DbSet<Restaurante> Restaurante { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -12,7 +12,7 @@ namespace Infrastructure.Configuration
             builder.Property(e => e.Id).ValueGeneratedNever();
             builder.Property(e => e.CriadoEm).HasColumnType("timestamp without time zone").IsRequired();
             builder.Property(e => e.AlteradoEm).HasColumnType("timestamp without time zone");
-            builder.Property(e => e.RestauranteId).IsRequired();
+            builder.Property(e => e.RestauranteId);
 
             builder.HasOne(c => c.Restaurante)
                 .WithOne(r => r.Cardapio)
