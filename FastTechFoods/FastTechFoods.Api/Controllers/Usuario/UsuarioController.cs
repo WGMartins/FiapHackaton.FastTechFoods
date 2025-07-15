@@ -22,11 +22,21 @@ namespace Api.Controllers.Usuario
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] AutenticarUsuarioDto autenticarUsuarioDto)
         {
-            var usuario = await _autenticarUsuarioUseCase.Autenticar(autenticarUsuarioDto);
-            if (usuario == null) return Unauthorized();
 
-            var token = _jwtToken.GerarToken(usuario);
-            return Ok(new { token });
+            try
+            {
+                var usuario = await _autenticarUsuarioUseCase.Autenticar(autenticarUsuarioDto);
+                if (usuario == null) return Unauthorized();
+
+                var token = _jwtToken.GerarToken(usuario);
+                return Ok(token);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            
         }
     }
 }

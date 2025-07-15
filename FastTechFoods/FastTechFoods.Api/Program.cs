@@ -21,6 +21,7 @@ using UseCase.Interfaces;
 using UseCase.PedidoUseCase.AceitarPedido;
 using UseCase.PedidoUseCase.AdicionarItemPedido;
 using UseCase.PedidoUseCase.CancelarPedido;
+using UseCase.PedidoUseCase.CriarPedido;
 using UseCase.PedidoUseCase.EnviarPedido;
 using UseCase.PedidoUseCase.ListarPedidos;
 using UseCase.PedidoUseCase.RejeitarPedido;
@@ -85,6 +86,9 @@ builder.Services.AddScoped<IListarItensCardapioUseCase, ListarItensCardapioUseCa
 #endregion
 
 #region Pedido
+
+builder.Services.AddScoped<ICriarPedidoUseCase, CriarPedidoUseCase>();
+builder.Services.AddScoped<IValidator<AdicionarPedidoDto>, CriarPedidoValidator>();
 
 builder.Services.AddScoped<IAdicionarItemPedidoUseCase, AdicionarItemPedidoUseCase>();
 builder.Services.AddScoped<IValidator<AdicionarItemPedidoDto>, AdicionarItemPedidoValidator>();

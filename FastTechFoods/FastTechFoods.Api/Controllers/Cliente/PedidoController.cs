@@ -12,15 +12,15 @@ namespace Api.Controllers.Cliente
     [ApiController]
     public class PedidoController : ControllerBase
     {
-        private readonly IAdicionarItemCardapioUseCase _adicionarItemCardapioUseCase;
+        private readonly ICriarPedidoUseCase _criarPedidoUseCase;
         private readonly IAdicionarItemPedidoUseCase _adicionarItemPedidoUseCase;
         private readonly IEnviarPedidoUseCase _enviarPedidoUseCase;
         private readonly ICancelarPedidoUseCase _cancelarPedidoUseCase;
 
-        public PedidoController(IAdicionarItemCardapioUseCase adicionarItemCardapioUseCase, IAdicionarItemPedidoUseCase adicionarItemPedidoUseCase
+        public PedidoController(ICriarPedidoUseCase criarPedidoUseCase, IAdicionarItemPedidoUseCase adicionarItemPedidoUseCase
             , IEnviarPedidoUseCase enviarPedidoUseCase, ICancelarPedidoUseCase cancelarPedidoUseCase)
         {
-            _adicionarItemCardapioUseCase = adicionarItemCardapioUseCase;
+            _criarPedidoUseCase = criarPedidoUseCase;
             _adicionarItemPedidoUseCase = adicionarItemPedidoUseCase;
             _enviarPedidoUseCase = enviarPedidoUseCase;
             _cancelarPedidoUseCase = cancelarPedidoUseCase;
@@ -32,8 +32,7 @@ namespace Api.Controllers.Cliente
         {
             try
             {
-                //return Ok(_adicionarItemCardapioUseCase.Adicionar(adicionarItemDto));
-                return Ok();
+                return Ok(_criarPedidoUseCase.Criar(idCliente, adicionarPedidoDto));
             }
             catch (Exception e)
             {

@@ -4,6 +4,6 @@ namespace UseCase.Interfaces
 {
     public interface ICriarPedidoUseCase
     {
-        PedidoAdicionadoDto Criar (AdicionarPedidoDto input);
+        PedidoAdicionadoDto Criar (Guid idCliente, AdicionarPedidoDto adicionarPedidoDto);
     }
 }
