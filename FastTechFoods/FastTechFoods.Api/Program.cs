@@ -1,15 +1,18 @@
 using Domain.Interfaces;
 using FluentValidation;
 using Infrastructure.Auth;
+using Infrastructure.RabbitMq;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json.Serialization;
 using UseCase.AuthUseCase.AutenticarUsuario;
@@ -161,6 +164,32 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+});
+
+#endregion
+
+#region RabbitMQ
+
+builder.Services.Configure<RabbitMqSettings>("ProducerPedido", builder.Configuration.GetSection("RabbitMQ:Pedido"));
+builder.Services.Configure<RabbitMqSettings>("ProducerCardapio", builder.Configuration.GetSection("RabbitMQ:Cardapio"));
+
+builder.Services.AddSingleton<Func<string, IMessagePublisher>>(sp => producerName =>
+{
+    var settingsMonitor = sp.GetRequiredService<IOptionsMonitor<RabbitMqSettings>>();
+    var settings = settingsMonitor.Get(producerName);
+
+    var factory = new ConnectionFactory
+    {
+        HostName = settings.HostName,
+        UserName = settings.UserName,
+        Password = settings.Password,
+        VirtualHost = settings.VirtualHost
+    };
+
+    return new RabbitMqMessagePublisher(
+        async () => await factory.CreateConnectionAsync(),
+        Options.Create(settings)
+    );
 });
 
 #endregion

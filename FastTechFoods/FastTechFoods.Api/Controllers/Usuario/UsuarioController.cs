@@ -13,10 +13,16 @@ namespace Api.Controllers.Usuario
         private readonly IAutenticarUsuarioUseCase _autenticarUsuarioUseCase;
         private readonly JwtToken _jwtToken;
 
-        public UsuarioController(IAutenticarUsuarioUseCase autenticarUsuarioUseCase, JwtToken jwtToken)
+        private readonly IMessagePublisher _publisherA;
+        private readonly IMessagePublisher _publisherB;
+
+        public UsuarioController(IAutenticarUsuarioUseCase autenticarUsuarioUseCase, JwtToken jwtToken, Func<string, IMessagePublisher> publisherFactory)
         {
             _autenticarUsuarioUseCase = autenticarUsuarioUseCase;
             _jwtToken = jwtToken;
+
+            _publisherA = publisherFactory("ProducerPedido");
+            _publisherB = publisherFactory("ProducerCardapio");
         }
 
         [HttpPost]

@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastTechFoods.Domain\Domain.csproj" />
-    <ProjectReference Include="..\FastTechFoods.Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
