@@ -19,9 +19,24 @@
             ValorTotal = quantidade * valorUnitario;
         }
 
+        protected ItemDePedido(Guid id, Guid pedidoId, string nome, decimal valorUnitario, int quantidade)
+        {
+            Id = id;
+            PedidoId = pedidoId;
+            Nome = nome;
+            ValorUnitario = valorUnitario;
+            Quantidade = quantidade;
+            ValorTotal = quantidade * valorUnitario;
+        }
+
         public static ItemDePedido Criar(Guid pedidoId, string nome, decimal valorUnitario, int quantidade)
         {
             return new ItemDePedido(pedidoId, nome, valorUnitario, quantidade);
+        }
+
+        public static ItemDePedido Criar(Guid id, Guid pedidoId, string nome, decimal valorUnitario, int quantidade)
+        {
+            return new ItemDePedido(id, pedidoId, nome, valorUnitario, quantidade);
         }
     }
 }

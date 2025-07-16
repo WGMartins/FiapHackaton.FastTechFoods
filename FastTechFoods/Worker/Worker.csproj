@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Worker-28bc3b88-3b7f-45f0-9500-1c6f9b34af91</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FastTechFoods.Domain\Domain.csproj" />
+    <ProjectReference Include="..\FastTechFoods.Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\FastTechFoods.UseCase\UseCase.csproj" />
+  </ItemGroup>
+</Project>

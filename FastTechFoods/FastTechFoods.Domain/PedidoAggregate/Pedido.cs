@@ -21,9 +21,24 @@ namespace Domain.PedidoAggregate
             FormaDeEntrega = formaDeEntrega;
         }
 
+        public Pedido(Guid id, Guid restauranteId, Guid clienteId, Status status, FormaDeEntrega formaDeEntrega, decimal valorTotal)
+        {
+            Id = id;
+            RestauranteId = restauranteId;            
+            ClienteId = clienteId;            
+            Status = status;
+            FormaDeEntrega = formaDeEntrega;
+            ValorTotal = valorTotal;            
+        }
+
         public static Pedido Criar(Guid restauranteId, Guid clienteId, FormaDeEntrega formaDeEntrega)
         {
             return new Pedido(restauranteId, clienteId, formaDeEntrega);
+        }
+
+        public static Pedido Criar(Guid id, Guid restauranteId, Guid clienteId, Status status, FormaDeEntrega formaDeEntrega, decimal valorTotal)
+        {
+            return new Pedido(id, restauranteId, clienteId, status, formaDeEntrega, valorTotal);
         }
 
         private void AtualizarValorTotal (decimal valorTotalItem)
@@ -37,6 +52,17 @@ namespace Domain.PedidoAggregate
 
             ItensDePedido.Add(itemDePedido);
             
+            AtualizarValorTotal(itemDePedido.ValorTotal);
+
+            return itemDePedido;
+        }
+
+        public ItemDePedido AdicionarItem(Guid id, Guid pedidoId, string nome, decimal valorUnitario, int quantidade)
+        {
+            var itemDePedido = ItemDePedido.Criar(id, pedidoId, nome, valorUnitario, quantidade);
+
+            ItensDePedido.Add(itemDePedido);
+
             AtualizarValorTotal(itemDePedido.ValorTotal);
 
             return itemDePedido;

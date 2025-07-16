@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using FluentValidation;
+using UseCase.CardapioUseCase.Shared;
 using UseCase.Interfaces;
 
 namespace UseCase.CardapioUseCase.AdicionarItemCardapio
@@ -8,11 +9,13 @@ namespace UseCase.CardapioUseCase.AdicionarItemCardapio
     {
         private readonly ICardapioRepository _cardapioRepository;
         private readonly IValidator<AdicionarItemCardapioDto> _validator;
+        private readonly IMessagePublisher _publisherCardapio;
 
-        public AdicionarItemCardapioUseCase(ICardapioRepository cardapioRepository, IValidator<AdicionarItemCardapioDto> validator)
+        public AdicionarItemCardapioUseCase(ICardapioRepository cardapioRepository, IValidator<AdicionarItemCardapioDto> validator, Func<string, IMessagePublisher> publisherFactory)
         {
             _cardapioRepository = cardapioRepository;
             _validator = validator;
+            _publisherCardapio = publisherFactory("ProducerCardapio");
         }
 
         public ItemAdicionadoDto Adicionar(Guid idRestaurante, Guid idCardapio, AdicionarItemCardapioDto adicionarItemDto)
@@ -39,6 +42,22 @@ namespace UseCase.CardapioUseCase.AdicionarItemCardapio
             var itemDeCardapio = cardapio.AdicionarItem(idCardapio, adicionarItemDto.Nome, adicionarItemDto.Valor, adicionarItemDto.Descricao, adicionarItemDto.Tipo);
 
             _cardapioRepository.Atualizar(cardapio);
+
+            _publisherCardapio.PublishAsync(new CardapioAtualizadoDto
+            {
+
+                Id = idCardapio,
+                RestauranteId = idRestaurante,
+                ItensDeCardapio = cardapio.ItensDeCardapio
+                .Select(i => new ItemDeCardapioAtualizadoDto
+                {
+                    Id = i.Id,
+                    Nome = i.Nome,
+                    Valor = i.Valor,
+                    Descricao = i.Descricao,
+                    Tipo = i.Tipo,
+                }).ToList()
+            });
 
             return new ItemAdicionadoDto
             {

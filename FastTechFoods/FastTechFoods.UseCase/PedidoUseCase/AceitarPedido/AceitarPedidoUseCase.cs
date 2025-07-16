@@ -7,10 +7,12 @@ namespace UseCase.PedidoUseCase.AceitarPedido
     public class AceitarPedidoUseCase : IAceitarPedidoUseCase
     {
         private readonly IPedidoRepository _pedidoRepository;
+        private readonly IMessagePublisher _publisherPedido;
 
-        public AceitarPedidoUseCase(IPedidoRepository pedidoRepository)
+        public AceitarPedidoUseCase(IPedidoRepository pedidoRepository, Func<string, IMessagePublisher> publisherFactory)
         {
             _pedidoRepository = pedidoRepository;
+            _publisherPedido = publisherFactory("ProducerPedido");
         }
 
         public void Aceitar(Guid idRestaurante, Guid id)
@@ -30,6 +32,12 @@ namespace UseCase.PedidoUseCase.AceitarPedido
             pedido.AlterarStatus(Status.Aprovado);
 
             _pedidoRepository.Atualizar(pedido);
+
+            _publisherPedido.PublishAsync(new AceitarPedidoDto
+            {
+                Id = pedido.Id,
+                Status = Status.Aprovado,
+            });
         }
     }
 }

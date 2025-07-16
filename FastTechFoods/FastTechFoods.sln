@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "FastTechF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCase", "FastTechFoods.UseCase\UseCase.csproj", "{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{19F6E740-C3EF-4658-AC1D-230129733E9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F6E740-C3EF-4658-AC1D-230129733E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F6E740-C3EF-4658-AC1D-230129733E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F6E740-C3EF-4658-AC1D-230129733E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F6E740-C3EF-4658-AC1D-230129733E9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{3D665F00-1DFF-453B-820C-6EA162865FB7} = {42C0E74A-D8BD-4DB2-8908-2E0548052BE5}
 		{FDBC7AEF-1458-4525-AAAA-B4C45312978C} = {42C0E74A-D8BD-4DB2-8908-2E0548052BE5}
 		{2EFC9972-62FB-44C5-B98E-997DE1FC4D35} = {42C0E74A-D8BD-4DB2-8908-2E0548052BE5}
+		{19F6E740-C3EF-4658-AC1D-230129733E9D} = {42C0E74A-D8BD-4DB2-8908-2E0548052BE5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85DFD829-CD98-4026-A775-EBAE33D0B13C}

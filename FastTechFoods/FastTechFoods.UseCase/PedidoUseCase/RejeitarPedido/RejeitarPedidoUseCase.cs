@@ -7,10 +7,12 @@ namespace UseCase.PedidoUseCase.RejeitarPedido
     public class RejeitarPedidoUseCase : IRejeitarPedidoUseCase
     {
         private readonly IPedidoRepository _pedidoRepository;
+        private readonly IMessagePublisher _publisherPedido;
 
-        public RejeitarPedidoUseCase(IPedidoRepository pedidoRepository)
+        public RejeitarPedidoUseCase(IPedidoRepository pedidoRepository, Func<string, IMessagePublisher> publisherFactory)
         {
             _pedidoRepository = pedidoRepository;
+            _publisherPedido = publisherFactory("ProducerPedido");
         }
 
         public void Rejeitar(Guid idRestaurante, Guid id)
@@ -30,6 +32,12 @@ namespace UseCase.PedidoUseCase.RejeitarPedido
             pedido.AlterarStatus(Status.Rejeitado);
 
             _pedidoRepository.Atualizar(pedido);
+
+            _publisherPedido.PublishAsync(new RejeitarPedidoDto
+            {
+                Id = pedido.Id,
+                Status = Status.Rejeitado,
+            });
         }
     }
 }

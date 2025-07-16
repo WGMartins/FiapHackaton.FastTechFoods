@@ -28,20 +28,12 @@ public class AutenticarUsuarioUseCase : IAutenticarUsuarioUseCase
             }
 
             throw new Exception(mensagemValidacao.Remove(mensagemValidacao.Length - 2));
-        }
+        }        
 
-        Usuario? usuario = null;
+        Usuario? usuario = await _usuarioRepository.BuscarPorEmailAsync(autenticarUsuarioDto.Email);
 
-        if (!string.IsNullOrEmpty(autenticarUsuarioDto.Email))
-        {
-            usuario = await _usuarioRepository.BuscarPorEmailAsync(autenticarUsuarioDto.Email, "Gerente");
-            if (usuario != null && VerificarSenha(autenticarUsuarioDto.Senha, usuario.SenhaHash))
-                return usuario;
-        }
-
-        usuario = await _usuarioRepository.BuscarClientePorCpfOuEmailAsync(autenticarUsuarioDto.Cpf, autenticarUsuarioDto.Email);
         if (usuario != null && VerificarSenha(autenticarUsuarioDto.Senha, usuario.SenhaHash))
-            return usuario;
+            return usuario;               
 
         return null;
     }

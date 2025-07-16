@@ -12,21 +12,11 @@ namespace Infrastructure.Repositories
         public UsuarioRepository(ApplicationDbContext context)
         {
             _context = context;
-        }
+        }        
 
-        public async Task<Usuario?> BuscarClientePorCpfOuEmailAsync(string? cpf, string? email)
+        public async Task<Usuario?> BuscarPorEmailAsync(string email)
         {
-            return await _context.Usuario.FirstOrDefaultAsync(u =>
-            u.Role == "Cliente" &&
-            (
-                (!string.IsNullOrEmpty(email) && u.Email == email) ||
-                (!string.IsNullOrEmpty(cpf) && u.Cpf == cpf)
-            ));
-        }
-
-        public async Task<Usuario?> BuscarPorEmailAsync(string email, string role)
-        {
-            return await _context.Usuario.FirstOrDefaultAsync(u => u.Role == role && u.Email == email);            
+            return await _context.Usuario.FirstOrDefaultAsync(u => u.Role != "Cliente" && u.Email == email);            
         }
     }
 }
