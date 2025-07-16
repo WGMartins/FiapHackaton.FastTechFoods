@@ -18,17 +18,11 @@ using System.Text.Json.Serialization;
 using UseCase.AuthUseCase.AutenticarUsuario;
 using UseCase.CardapioUseCase.AdicionarItemCardapio;
 using UseCase.CardapioUseCase.AtualizarItemCardapio;
-using UseCase.CardapioUseCase.ListarItensCardapio;
 using UseCase.CardapioUseCase.RemoverItemCardapio;
 using UseCase.Interfaces;
 using UseCase.PedidoUseCase.AceitarPedido;
-using UseCase.PedidoUseCase.AdicionarItemPedido;
-using UseCase.PedidoUseCase.CancelarPedido;
-using UseCase.PedidoUseCase.CriarPedido;
-using UseCase.PedidoUseCase.EnviarPedido;
 using UseCase.PedidoUseCase.ListarPedidos;
 using UseCase.PedidoUseCase.RejeitarPedido;
-using UseCase.PedidoUseCase.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,23 +78,11 @@ builder.Services.AddScoped<IValidator<AtualizarItemCardapioDto>, AtualizarItemVa
 
 builder.Services.AddScoped<IRemoverItemCardapioUseCase, RemoverItemCardapioUseCase>();
 
-builder.Services.AddScoped<IListarItensCardapioUseCase, ListarItensCardapioUseCase>();
-
 #endregion
 
 #region Pedido
 
-builder.Services.AddScoped<ICriarPedidoUseCase, CriarPedidoUseCase>();
-builder.Services.AddScoped<IValidator<AdicionarPedidoDto>, CriarPedidoValidator>();
-
-builder.Services.AddScoped<IAdicionarItemPedidoUseCase, AdicionarItemPedidoUseCase>();
-builder.Services.AddScoped<IValidator<AdicionarItemPedidoDto>, AdicionarItemPedidoValidator>();
-
 builder.Services.AddScoped<IAceitarPedidoUseCase, AceitarPedidoUseCase>();
-
-builder.Services.AddScoped<ICancelarPedidoUseCase, CancelarPedidoUseCase>();
-
-builder.Services.AddScoped<IEnviarPedidoUseCase, EnviarPedidoUseCase>();
 
 builder.Services.AddScoped<IRejeitarPedidoUseCase, RejeitarPedidoUseCase>();
 
