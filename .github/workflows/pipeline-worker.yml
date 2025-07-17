@@ -1,0 +1,90 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Pipeline Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY_NAME: fiaphackaton
+  CLUSTER_NAME: FastTechFoodsKS
+  CLUSTER_RESOURCE_GROUP: FastTechFoodsKS_group
+  NAMESPACE: default
+
+jobs:
+  build:
+
+    permissions: write-all
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore ./FastTechFoods/FastTechFoods.Worker/Worker.csproj
+      
+    - name: Build
+      run: dotnet build --no-restore ./FastTechFoods/FastTechFoods.Worker/Worker.csproj
+
+    # Connect to Azure Container registry (ACR)
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    # Container build and push to a Azure Container registry (ACR)
+    - run: |
+        docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/fasttechfoods.restaurante.worker:latest -f ./FastTechFoods/DockerfileWorker 
+        docker push ${{ env.REGISTRY_NAME }}.azurecr.io/fasttechfoods.restaurante.worker:latest
+    
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+
+    # Create namespace if doesn't exist
+    - run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json
+        
+
+    # Create ConfigMap
+    - name: Criar ou atualizar ConfigMap
+      run: |
+          kubectl create configmap configmap-worker \
+            --from-literal=RabbitMQ__Pedido__HostName=${{ secrets.RABBITMQ__PEDIDO__HOSTNAME }} \
+            --from-literal=RabbitMQ__Cardapio__HostName=${{ secrets.RABBITMQ__CARDAPIO__HOSTNAME }} \
+            --from-literal=ConnectionStrings__ConnectionString=${{ secrets.CONNECTIONSTRINGS__CONNECTIONSTRING }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+    
+    # Create imagepullsecret for Azure Container registry (ACR)
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
+    
+    # Deploy app to AKS
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          FastTechFoods/deployment-worker.yml
+        images: |
+          ${{ env.REGISTRY_NAME }}.azurecr.io/fasttechfoods.restaurante.worker:latest
+        imagepullsecrets: |
+          ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
