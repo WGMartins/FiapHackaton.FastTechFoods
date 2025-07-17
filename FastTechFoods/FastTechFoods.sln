@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{52821DAF-35AE-4465-B6FD-433A656B4369}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
+		DockerfileWorker = DockerfileWorker
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "FastTechFoods.Domain\Domain.csproj", "{3D665F00-1DFF-453B-820C-6EA162865FB7}"

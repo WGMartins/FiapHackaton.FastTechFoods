@@ -26,7 +26,7 @@ using UseCase.PedidoUseCase.RejeitarPedido;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+builder.Configuration.AddEnvironmentVariables();
 
 const string serviceName = "FastTechFoods-Restaurante";
 
@@ -58,7 +58,7 @@ builder.Services.AddOpenTelemetry()
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(configuration.GetConnectionString("ConnectionString"));
+    options.UseNpgsql(builder.Configuration.GetSection("ConnectionStrings")["ConnectionString"]);
 }, ServiceLifetime.Scoped);
 
 #region Banco de Dados
@@ -178,12 +178,8 @@ builder.Services.AddSingleton<Func<string, IMessagePublisher>>(sp => producerNam
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

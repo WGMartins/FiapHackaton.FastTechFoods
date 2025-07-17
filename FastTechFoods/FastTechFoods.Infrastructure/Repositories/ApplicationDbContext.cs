@@ -1,8 +1,7 @@
-﻿using Domain.PedidoAggregate;
-using Domain.CardapioAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Domain.CardapioAggregate;
+using Domain.PedidoAggregate;
 using Domain.UsuarioAggregate;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -28,14 +27,7 @@ namespace Infrastructure.Repositories
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .AddJsonFile(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../FastTechFoods.Api/appsettings.json"))).Build();
-
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("ConnectionString"));
-            }
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
