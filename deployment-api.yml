@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fasttechfoods-restaurante-api
+  labels:
+    app: fasttechfoods-restaurante-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fasttechfoods-restaurante-api
+  template:
+    metadata:
+      labels:
+        app: fasttechfoods-restaurante-api
+    spec:
+      containers:
+      - name: fasttechfoods-restaurante-api
+        image: fiaphackaton.azurecr.io/fasttechfoods.restaurante.api
+        envFrom:
+          - configMapRef:
+             name: configmap-api
+        ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fasttechfoods-restaurante-api
+  labels:
+    app: fasttechfoods-restaurante-api
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  selector:
+    app: fasttechfoods-restaurante-api
