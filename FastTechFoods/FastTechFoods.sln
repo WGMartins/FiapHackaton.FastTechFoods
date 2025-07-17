@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "FastTechF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCase", "FastTechFoods.UseCase\UseCase.csproj", "{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{19F6E740-C3EF-4658-AC1D-230129733E9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "FastTechFoods.Worker\Worker.csproj", "{19F6E740-C3EF-4658-AC1D-230129733E9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
