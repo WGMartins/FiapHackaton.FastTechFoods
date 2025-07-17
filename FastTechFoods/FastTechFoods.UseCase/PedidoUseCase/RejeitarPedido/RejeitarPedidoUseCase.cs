@@ -36,6 +36,7 @@ namespace UseCase.PedidoUseCase.RejeitarPedido
             _publisherPedido.PublishAsync(new RejeitarPedidoDto
             {
                 Id = pedido.Id,
+                RestauranteId = idRestaurante,
                 Status = Status.Rejeitado,
             });
         }

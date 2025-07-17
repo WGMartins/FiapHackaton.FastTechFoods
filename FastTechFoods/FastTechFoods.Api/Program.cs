@@ -28,7 +28,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-const string serviceName = "FastTechFoods";
+const string serviceName = "FastTechFoods-Restaurante";
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

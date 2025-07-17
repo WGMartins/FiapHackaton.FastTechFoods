@@ -61,9 +61,7 @@ namespace Domain.PedidoAggregate
         {
             var itemDePedido = ItemDePedido.Criar(id, pedidoId, nome, valorUnitario, quantidade);
 
-            ItensDePedido.Add(itemDePedido);
-
-            AtualizarValorTotal(itemDePedido.ValorTotal);
+            ItensDePedido.Add(itemDePedido);            
 
             return itemDePedido;
         }
