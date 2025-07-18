@@ -64,8 +64,9 @@ jobs:
     - name: Criar ou atualizar ConfigMap
       run: |
           kubectl create configmap configmap-worker \
-            --from-literal=RabbitMQ__Pedido__HostName=${{ secrets.RABBITMQ__PEDIDO__HOSTNAME }} \
-            --from-literal=RabbitMQ__Cardapio__HostName=${{ secrets.RABBITMQ__CARDAPIO__HOSTNAME }} \
+            --from-literal=RabbitMQConsumer__Pedido__HostName=${{ secrets.RABBITMQ__PEDIDO__HOSTNAME }} \
+            --from-literal=RabbitMQConsumer__Pedido__VirtualHost=vh.restaurante \
+            --from-literal=RabbitMQConsumer__Pedido__Queue=q.pedido.enviado \
             --from-literal=ConnectionStrings__ConnectionString=${{ secrets.CONNECTIONSTRINGS__CONNECTIONSTRING }} \
             --dry-run=client -o yaml | kubectl apply -f -
     

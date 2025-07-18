@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "FastTechFoods.Api\Api.csproj", "{8253124A-6443-45AF-9E84-39EA806CB83D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "FastTechFoods.Api\Api.csproj", "{8253124A-6443-45AF-9E84-39EA806CB83D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{42C0E74A-D8BD-4DB2-8908-2E0548052BE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{52821DAF-35AE-4465-B6FD-433A656B4369}"
 	ProjectSection(SolutionItems) = preProject
+		deployment-api.yml = deployment-api.yml
+		deployment-worker.yml = deployment-worker.yml
 		Dockerfile = Dockerfile
 		DockerfileWorker = DockerfileWorker
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "FastTechFoods.Domain\Domain.csproj", "{3D665F00-1DFF-453B-820C-6EA162865FB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "FastTechFoods.Domain\Domain.csproj", "{3D665F00-1DFF-453B-820C-6EA162865FB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "FastTechFoods.Infrastructure\Infrastructure.csproj", "{FDBC7AEF-1458-4525-AAAA-B4C45312978C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "FastTechFoods.Infrastructure\Infrastructure.csproj", "{FDBC7AEF-1458-4525-AAAA-B4C45312978C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCase", "FastTechFoods.UseCase\UseCase.csproj", "{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UseCase", "FastTechFoods.UseCase\UseCase.csproj", "{2EFC9972-62FB-44C5-B98E-997DE1FC4D35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "FastTechFoods.Worker\Worker.csproj", "{19F6E740-C3EF-4658-AC1D-230129733E9D}"
 EndProject

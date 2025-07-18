@@ -24,7 +24,7 @@ builder.Services.AddScoped<IAdicionarPedidoUseCase, AdicionarPedidoUseCase>();
 
 #region RabbitMQ
 
-builder.Services.Configure<RabbitMqSettings>("PedidoConsumer", builder.Configuration.GetSection("RabbitMQ:Pedido"));
+builder.Services.Configure<RabbitMqSettings>("PedidoConsumer", builder.Configuration.GetSection("RabbitMQConsumer:Pedido"));
 
 builder.Services.AddSingleton<IMessageConsumer<AdicionarPedidoDto>>(sp =>
 {
