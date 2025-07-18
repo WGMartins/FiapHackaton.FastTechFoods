@@ -18,7 +18,7 @@ namespace UseCase.CardapioUseCase.AdicionarItemCardapio
             _publisherCardapio = publisherFactory("ProducerCardapio");
         }
 
-        public ItemAdicionadoDto Adicionar(Guid idRestaurante, Guid idCardapio, AdicionarItemCardapioDto adicionarItemDto)
+        public async Task<ItemAdicionadoDto> Adicionar(Guid idRestaurante, Guid idCardapio, AdicionarItemCardapioDto adicionarItemDto)
         {
             var validacao = _validator.Validate(adicionarItemDto);
             if (!validacao.IsValid)
@@ -43,7 +43,7 @@ namespace UseCase.CardapioUseCase.AdicionarItemCardapio
 
             _cardapioRepository.Atualizar(cardapio);
 
-            _publisherCardapio.PublishAsync(new CardapioAtualizadoDto
+            await _publisherCardapio.PublishAsync(new CardapioAtualizadoDto
             {
 
                 Id = idCardapio,

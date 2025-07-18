@@ -25,11 +25,11 @@ namespace Api.Controllers.Restaurante
 
         [HttpPost]
         [Route("{idCardapio:Guid}/Item")]
-        public IActionResult Adicionar(Guid idRestaurante, Guid idCardapio, AdicionarItemCardapioDto adicionarItemDto)
+        public async Task<IActionResult> Adicionar(Guid idRestaurante, Guid idCardapio, AdicionarItemCardapioDto adicionarItemDto)
         {
             try
             {
-                return Ok(_adicionarItemCardapioUseCase.Adicionar(idRestaurante, idCardapio, adicionarItemDto));
+                return Ok(await _adicionarItemCardapioUseCase.Adicionar(idRestaurante, idCardapio, adicionarItemDto));
             }
             catch (Exception e)
             {
