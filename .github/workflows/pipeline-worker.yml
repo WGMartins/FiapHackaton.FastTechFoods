@@ -65,8 +65,8 @@ jobs:
       run: |
           kubectl create configmap configmap-worker \
             --from-literal=RabbitMQConsumer__Pedido__HostName=${{ secrets.RABBITMQ__PEDIDO__HOSTNAME }} \
-            --from-literal=RabbitMQProducer__Pedido__UserName=${{ secrets.RABBITMQ__USERNAME }} \
-            --from-literal=RabbitMQProducer__Pedido__Password=${{ secrets.RABBITMQ__PASSWORD }} \
+            --from-literal=RabbitMQConsumer__Pedido__UserName=${{ secrets.RABBITMQ__USERNAME }} \
+            --from-literal=RabbitMQConsumer__Pedido__Password=${{ secrets.RABBITMQ__PASSWORD }} \
             --from-literal=RabbitMQConsumer__Pedido__VirtualHost=vh.restaurante \
             --from-literal=RabbitMQConsumer__Pedido__Queue=q.pedido.enviado \
             --from-literal=ConnectionStrings__ConnectionString=${{ secrets.CONNECTIONSTRINGS__CONNECTIONSTRING }} \
