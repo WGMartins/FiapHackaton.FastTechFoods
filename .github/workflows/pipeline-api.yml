@@ -65,10 +65,14 @@ jobs:
       run: |
           kubectl create configmap configmap-api \
             --from-literal=RabbitMQProducer__Pedido__HostName=${{ secrets.RABBITMQ__PEDIDO__HOSTNAME }} \
+            --from-literal=RabbitMQProducer__Pedido__UserName=${{ secrets.RABBITMQ__USERNAME }} \
+            --from-literal=RabbitMQProducer__Pedido__Password=${{ secrets.RABBITMQ__PASSWORD }} \
             --from-literal=RabbitMQProducer__Pedido__VirtualHost=vh.cliente \
             --from-literal=RabbitMQProducer__Pedido__Exchange=x.pedido.conferido \
             --from-literal=RabbitMQProducer__Pedido__RoutingKey=rk.pedido.conferido \
             --from-literal=RabbitMQProducer__Cardapio__HostName=${{ secrets.RABBITMQ__CARDAPIO__HOSTNAME }} \
+            --from-literal=RabbitMQProducer__Cardapio__UserName=${{ secrets.RABBITMQ__USERNAME }} \
+            --from-literal=RabbitMQProducer__Cardapio__Password=${{ secrets.RABBITMQ__PASSWORD }} \
             --from-literal=RabbitMQProducer__Cardapio__VirtualHost=vh.cliente \
             --from-literal=RabbitMQProducer__Cardapio__Exchange=x.cardapio.alterado \
             --from-literal=RabbitMQProducer__Cardapio__RoutingKey=rk.cardapio.alterado \
